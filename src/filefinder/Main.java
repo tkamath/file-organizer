@@ -2,20 +2,10 @@ package filefinder;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.OutputStreamWriter;
-import java.nio.file.DirectoryIteratorException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,12 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-public class Parser {
+public class Main {
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws java.nio.file.FileAlreadyExistsException {
+
 		JFrame frame = new JFrame("Music File Organizer");
 		JButton button = new JButton("Click here!");
 		button.setFont(new Font("Sans Serif", Font.BOLD, 20));
@@ -38,11 +26,9 @@ public class Parser {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				String msgToUsers = "Enter source path here";
 				String boxTitle = "Music File Organizer";
-				JOptionPane genOpPane = new JOptionPane();
-				Object result = genOpPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				Object result = JOptionPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				arrangeFiles((String) result);
 			}
 		});
@@ -53,7 +39,6 @@ public class Parser {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				System.exit(0);
 			}
 		});
@@ -72,20 +57,17 @@ public class Parser {
 		String boxTitle;
 		
 		while (!dir.exists()) {
-			JOptionPane errorPane = new JOptionPane();
-			errorPane.showMessageDialog(null, "Folder not found", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Folder not found", "Error", JOptionPane.ERROR_MESSAGE);
 			
 			msgToUsers = "Enter source path here";
 			boxTitle = "Music File Organizer";
-			JOptionPane genOpPane = new JOptionPane();
-			Object result = genOpPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);			
+			Object result = JOptionPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);			
 			dir = new File((String) result);
 		}
-	//	System.out.println(dir.getParentFile());
+		
 		msgToUsers = "Enter name of new folder";
 		boxTitle = "Music File Organizer";
-		JOptionPane genOpPane = new JOptionPane();
-		Object name = genOpPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		Object name = JOptionPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);
 		String newFolderPath = dir.getParentFile() + "\\" + (String) name;
 		File newFolder = new File(newFolderPath);
 		if (!newFolder.exists()) {
@@ -93,7 +75,6 @@ public class Parser {
 		} else {
 			System.out.println("Already exists");
 		}
-	//	helperIter(dir, newFolder);
 		
 		String destStemStr = dir.getParent() + "\\" + newFolder.getName();
 		helperIter(dir, destStemStr);
@@ -108,7 +89,6 @@ public class Parser {
 				try {
 					Files.copy(file.toPath(), destPath);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
