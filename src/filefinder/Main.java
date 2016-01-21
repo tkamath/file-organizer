@@ -68,7 +68,9 @@ public class Main {
 		msgToUsers = "Enter name of new folder";
 		boxTitle = "Music File Organizer";
 		Object name = JOptionPane.showInputDialog(null, msgToUsers, boxTitle, JOptionPane.QUESTION_MESSAGE, null, null, null);
-		String newFolderPath = dir.getParentFile() + "\\" + (String) name;
+		String newFolderPath = dir.getParentFile() + "/" + (String) name;
+		System.out.println("newFolderPath is " + newFolderPath);
+		
 		File newFolder = new File(newFolderPath);
 		if (!newFolder.exists()) {
 			newFolder.mkdirs();
@@ -76,7 +78,8 @@ public class Main {
 			System.out.println("Already exists");
 		}
 		
-		String destStemStr = dir.getParent() + "\\" + newFolder.getName();
+		String destStemStr = dir.getParent() + "/" + newFolder.getName();
+		System.out.println("destStemStr is " + destStemStr);
 		helperIter(dir, destStemStr);
 		
 		
@@ -85,7 +88,8 @@ public class Main {
 	static void helperIter(File musicFolder, String destStemStr) {
 		for (File file: musicFolder.listFiles()) {
 			if (!file.isDirectory()) {
-				Path destPath = Paths.get(destStemStr, "\\", file.getName());
+				Path destPath = Paths.get(destStemStr, "/", file.getName());
+				System.out.println("destPath is " + destPath);
 				try {
 					Files.copy(file.toPath(), destPath);
 				} catch (IOException e) {
